@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Overview</title>
+    <link rel="stylesheet" href="/styles/budjet.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/styles/bot.css">
+    <link rel="stylesheet" href="/styles/toggle.css">
+
+
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>📊 Budget Planner</h2>
+            <ul>
+                <li><a href="/dashboard">Overview</a></li>
+                <li><a href="/transaction">Transactions</a></li>
+                <li><a href="/budjet">Budgets</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+           
+<!-- Add this button anywhere in your HTML -->
+<button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
+<button id="logout-btn" class="logout">Logout</button>
+
+
+        </nav>
+
+        <div class="dashboard">
+            <h1>Budget Overview</h1>
+            <div class="budget-summary">
+                
+                <div class="box">
+                    <h3>Total Income</h3>
+                    <p id="totalIncome">₹<%= totalIncome %></p>
+                </div>
+                <div class="box">
+                    <h3>Total Expenses</h3>
+                    <p id="totalExpenses">₹<%= totalExpenses %></p>
+                </div>
+                <div class="box">
+                    <h3>Remaining Budget</h3>
+                    <p id="remainingBudget">₹<%= remainingBudget %></p>
+                </div>
+            </div>
+
+            <div class="set-budget">
+                <h2>Set Budget</h2>
+                <form id="budgetForm">
+                    <select id="category" name="category" class="input-field" required>
+                        <optgroup label="Expenses">
+                            <option value="food">Food & Dining</option>
+                            <option value="transport">Transportation</option>
+                            <option value="rent">Rent/Mortgage</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="health">Health & Medical</option>
+                            <option value="education">Education</option>
+                            <option value="travel">Travel</option>
+                            <option value="subscriptions">Subscriptions</option>
+                            <option value="loan">Loan Payments</option>
+                            <option value="insurance">Insurance</option>
+                            <option value="savings">Savings & Investments</option>
+                            <option value="other_expense">Other</option>
+                        </optgroup>
+                    </select>
+                    <input type="number" name="amount" id="budgetAmount" placeholder="Enter Budget (₹)" required>
+                    <button type="submit">Set</button>
+                </form>
+                <p id="budgetMessage" style="color: green; display: none;">Budget updated successfully!</p>
+            </div>
+
+            <div class="expense-breakdown">
+                <h2>Expense Breakdown</h2>
+                <div class="expense-container">
+                    <div class="chart-section">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                    <div class="text-section">
+                        <ul id="expenseList"></ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="transaction-history">
+                <h2>Recent Transactions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody">
+                        <% transactions.slice(-5).reverse().forEach(txn => { %>
+                            <tr>
+                                <td><%= txn.type %></td>
+                                <td>₹<%= txn.amount %></td>
+                                <td><%= txn.category %></td>
+                                <td><%= new Date(txn.date).toLocaleDateString() %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="floating-bot" >
+        <div id="bot-icon" >
+            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+            <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay>
+                
+            </dotlottie-player>
+        </div>
+        <div id="bot-chat" class="hidden">
+            <div id="bot-header">
+                <span>AI Bot</span>
+                <button id="close-bot">&times;</button>
+            </div>
+            <div id="bot-messages">
+                <p class="bot-text">Hello! How can I help you?</p>
+            </div>
+            <div id="bot-input">
+                <input type="text" id="user-message" placeholder="Ask me anything...">
+                <button id="send-message">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+
+            fetch('/api/budget-chart')
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log(data);
+                    const expenses = data.transactions.filter(txn => txn.amount !== 0);
+                    document.getElementById("expenseList").innerHTML = expenses
+                    .filter(e => e.category !== "savings")
+                    .map(expense => 
+                        `<li>${expense.category}: ₹${expense.amount}</li>`
+                    ).join("");
+
+                   
+                    
+                    new Chart(document.getElementById("expenseChart"), {
+                        type: "doughnut",
+                        data: {
+                            labels: expenses
+                            .filter(e => e.category !== "savings")
+                            .map(e => e.category),
+                            datasets: [{
+                                data: expenses
+                                .filter(e => e.category !== "savings")
+                                .map(e => e.amount),
+                                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+
+
+                // fetch('/api/budget-chart')
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log(data);
+                // });
+        });
+    </script>
+    <script src="/scripts/budget.js"></script>
+    <script src="/scripts/bot.js"></script>
+    <script src="/scripts/toggle.js"></script>
+
+</body>
+</html>

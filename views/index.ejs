@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/bot.css">
+    <!-- https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie -->
+    <link rel="stylesheet" href="/styles/toggle.css">
+    <link rel="stylesheet" href="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>📊 Budget Planner</h2>
+            <ul>
+                <li><a href="/dashboard">Overview</a></li>
+                <li><a href="/transaction">Transactions</a></li>
+                <li><a href="/budjet">Budgets</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+           
+<!-- Add this button anywhere in your HTML -->
+<button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
+
+<button id="logout-btn" class="logout">Logout</button>
+
+        </nav>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <div class="summary">
+                <div class="card income">
+                    <h3>Total Income</h3>
+                    <p id="totalIncome">₹0</p>
+                </div>
+                <div class="card expenses">
+                    <h3>Total Expenses</h3>
+                    <p id="totalExpenses">₹0</p>
+                </div>
+                <div class="card savings">
+                    <h3>Remaining Balance</h3>
+                    <p id="balance">₹0</p>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            
+                <div class="left">
+                     <!-- <div class="chart-card">
+                        <h4>Balance Over Time</h4> 
+                        <canvas id="balanceChart"></canvas>
+                    </div> -->
+                    <div class="right">
+                        <div class="chart-card" id="right">
+                    
+                            <h4>hey good disision</h4>
+                           
+                      
+
+                         
+                   
+                        </div>
+                        &nbsp;
+                        &nbsp; &nbsp;&nbsp;
+                        &nbsp; &nbsp;
+                        <div class="chart-card" id="right">
+                    
+                            <h4> balance vs expence distribution  %</h4>
+                            <canvas id="savingsChart"></canvas>
+                      
+
+                         
+                   
+                        </div>
+                        &nbsp;
+                        &nbsp; &nbsp;&nbsp;
+                        &nbsp; &nbsp;
+
+                        <div class="chart-card" id="right">
+                    
+                        
+                            
+                            <h4>Income vs Expenses vs Savings</h4>
+                            <canvas id="donutChart"></canvas>
+                   
+                        </div>
+                        <!-- <div class="chart-card">
+                            
+                        </div> -->
+    
+                    </div>
+                    
+                    
+                    <div class="chart-card">
+                       
+                        <h4> Expenses vs Budget </h4>
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                       
+                        <h4> additional </h4>
+                        
+                    </div>
+                    
+                </div>
+
+                
+                    <div id="floating-bot" >
+                        <div id="bot-icon" >
+                            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
+                            <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay>
+                                
+                            </dotlottie-player>
+                        </div>
+                        
+                            <div id="bot-chat" class="hidden">
+                            <div id="bot-header">
+                                <span>AI Bot</span>
+                                <button id="close-bot">&times;</button>
+                            </div>
+                            <div id="bot-messages">
+                                <p class="bot-text">Hello! How can I help you?</p>
+                            </div>
+                            <div id="bot-input">
+                                <input type="text" id="user-message" placeholder="Ask me anything...">
+                                <button id="send-message">➤</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chart.js and custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/scripts/charts.js"></script>
+    <script src="/scripts/bot.js"></script>
+
+
+
+
+    <script src="/scripts/toggle.js"></script>
+
+</body>
+</html>
