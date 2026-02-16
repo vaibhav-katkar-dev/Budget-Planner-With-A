@@ -190,7 +190,7 @@ The AI assistant understands natural language commands:
 
 ## 👨‍💻 Author
 
-Created with ❤️ by [Vaibhav Katkar]()
+Created with ❤️ by [Vaibhav Katkar](https://github.com/vaibhav-katkar-dev/)
 
 ## 🙏 Acknowledgments
 
