@@ -19,9 +19,8 @@
                 <li><a href="/dashboard">Overview</a></li>
                 <li><a href="/transaction">Transactions</a></li>
                 <li><a href="/budjet">Budgets</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/profile">Profile</a></li>            </ul>
            
 <!-- Add this button anywhere in your HTML -->
 <button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
@@ -59,7 +58,7 @@
                     
                             <h4>hey good disision</h4>
                            
-                      
+                      <input id="huid" type="hidden" value="<%=userId%>">
 
                          
                    
@@ -138,13 +137,15 @@
         </div>
     </div>
 
+    
     <!-- Load Chart.js and custom scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/scripts/charts.js"></script>
     <script src="/scripts/bot.js"></script>
 
+    <script src="/scripts/session.js"></script>
 
-
+   
 
     <script src="/scripts/toggle.js"></script>
 

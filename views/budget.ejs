@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="/styles/budjet.css">
     <link rel="stylesheet" href="/styles/index.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <link rel="stylesheet" href="/styles/bot.css">
     <link rel="stylesheet" href="/styles/toggle.css">
-
-
 </head>
 <body>
     <div class="container">
@@ -20,21 +20,15 @@
                 <li><a href="/dashboard">Overview</a></li>
                 <li><a href="/transaction">Transactions</a></li>
                 <li><a href="/budjet">Budgets</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
-           
-<!-- Add this button anywhere in your HTML -->
-<button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
-<button id="logout-btn" class="logout">Logout</button>
-
-
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/profile">Profile</a></li>            </ul>
+            <button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
+            <button id="logout-btn" class="logout">Logout</button>
         </nav>
 
         <div class="dashboard">
             <h1>Budget Overview</h1>
             <div class="budget-summary">
-                
                 <div class="box">
                     <h3>Total Income</h3>
                     <p id="totalIncome">₹<%= totalIncome %></p>
@@ -52,7 +46,7 @@
             <div class="set-budget">
                 <h2>Set Budget</h2>
                 <form id="budgetForm">
-                    <select id="category" name="category" class="input-field" required>
+                    <!-- <select id="category" name="category" class="input-field" required>
                         <optgroup label="Expenses">
                             <option value="food">Food & Dining</option>
                             <option value="transport">Transportation</option>
@@ -69,9 +63,13 @@
                             <option value="savings">Savings & Investments</option>
                             <option value="other_expense">Other</option>
                         </optgroup>
-                    </select>
+                    </select> -->
+                    <input type="text" id="category" placeholder="Catagory" name="category" class="input-field" required>
+
+                    <input type="hidden" id="userId" value="<%= userId %>">
+
                     <input type="number" name="amount" id="budgetAmount" placeholder="Enter Budget (₹)" required>
-                    <button type="submit">Set</button>
+                    <button id="btnb" type="submit">Set</button>
                 </form>
                 <p id="budgetMessage" style="color: green; display: none;">Budget updated successfully!</p>
             </div>
@@ -87,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="transaction-history">
                 <h2>Recent Transactions</h2>
                 <table>
@@ -113,12 +111,11 @@
             </div>
         </div>
     </div>
-    <div id="floating-bot" >
-        <div id="bot-icon" >
+    
+    <div id="floating-bot">
+        <div id="bot-icon">
             <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-            <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay>
-                
-            </dotlottie-player>
+            <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
         </div>
         <div id="bot-chat" class="hidden">
             <div id="bot-header">
@@ -134,63 +131,13 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-
-
-            fetch('/api/budget-chart')
-                .then(response => response.json())
-                .then(data => {
-
-                    console.log(data);
-                    const expenses = data.transactions.filter(txn => txn.amount !== 0);
-                    document.getElementById("expenseList").innerHTML = expenses
-                    .filter(e => e.category !== "savings")
-                    .map(expense => 
-                        `<li>${expense.category}: ₹${expense.amount}</li>`
-                    ).join("");
-
-                   
-                    
-                    new Chart(document.getElementById("expenseChart"), {
-                        type: "doughnut",
-                        data: {
-                            labels: expenses
-                            .filter(e => e.category !== "savings")
-                            .map(e => e.category),
-                            datasets: [{
-                                data: expenses
-                                .filter(e => e.category !== "savings")
-                                .map(e => e.amount),
-                                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(error => console.error("Error fetching data:", error));
-
-
-                // fetch('/api/budget-chart')
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log(data);
-                // });
-        });
-    </script>
+    
+    <!-- <script src="/scripts/fetchData.js"></script> -->
+    <script src="/scripts/chart.js"></script>
     <script src="/scripts/budget.js"></script>
     <script src="/scripts/bot.js"></script>
     <script src="/scripts/toggle.js"></script>
-
+    
+    </script>
 </body>
 </html>

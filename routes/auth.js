@@ -70,7 +70,7 @@ router.post("/api/auth/login", async (req, res) => {
                 console.error("Session save error:", err);
                 return res.status(500).json({ error: "Session error" });
             }
-            res.json({ success: true, redirectURL: "/dashboard" });
+            res.json({ success: true, redirectURL: `/dashboard` });
         });
     } catch (error) {
         console.error("Login error:", error);

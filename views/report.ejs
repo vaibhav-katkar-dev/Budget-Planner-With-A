@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="/styles/transaction.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/bot.css">
+
+    <link rel="stylesheet" href="/styles/report.css">
+    <link rel="stylesheet" href="/styles/toggle.css"><!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- jsPDF AutoTable Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+
+
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <h2>📊 Budget Planner</h2>
+            <ul>
+                <li><a href="/dashboard">Overview</a></li>
+                <li><a href="/transaction">Transactions</a></li>
+                <li><a href="/budjet">Budgets</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        
+<!-- Add this button anywhere in your HTML -->
+<button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
+
+<button id="logout-btn" class="logout">Logout</button>
+
+        </nav>
+
+        <!-- Main Content -->
+        <div class="dashboard">
+            <!-- <div class="content"> -->
+
+
+                <div class="transaction-select">
+
+                    <br>
+                    <h1 id="text-h1">Download Report</h1>
+                    <br>
+                    <input type="date" name="from" required  id="i-from">
+                    <input type="date" name="to" required id="i-to">
+                    <button id="btn" >find</button>
+                    <button id="download-pdf">Download PDF</button>
+
+                </div>
+                <!-- Transaction History Table -->
+                <div class="transaction-history">
+                    <h2>Transaction History</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <!-- Transactions will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <div id="floating-bot" >
+        <div id="bot-icon" >
+            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+            <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay>
+                
+            </dotlottie-player>
+        </div>
+        <div id="bot-chat" class="hidden">
+            <div id="bot-header">
+                <span>AI Bot</span>
+                <button id="close-bot">&times;</button>
+            </div>
+            <div id="bot-messages">
+                <p class="bot-text">Hello! How can I help you?</p>
+            </div>
+            <div id="bot-input">
+                <input type="text" id="user-message" placeholder="Ask me anything...">
+                <button id="send-message">➤</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const user = <%- JSON.stringify(user) %>;
+        console.log(user.id,user.email); // Now accessible in JS
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+  const fromInput = document.getElementById("i-from");
+  const toInput = document.getElementById("i-to");
+  const findBtn = document.getElementById("btn");
+  const tableBody = document.getElementById("transactionTableBody");
+
+  let allTransactions = [];
+
+  // Fetch all transactions for user
+            const fetchTransactions = async () => {
+                try {
+      const response = await fetch("/api/data"); // your existing API
+                    const data = await response.json();
+      allTransactions = data.transactions;
+      renderTransactions(allTransactions);
+                } catch (error) {
+      console.error("Failed to fetch transactions:", error);
+                }
+            };
+
+  // Render transactions in table
+  const renderTransactions = (transactions) => {
+    tableBody.innerHTML = "";
+    if (transactions.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="4">No transactions found</td></tr>`;
+      return;
+    }
+
+                transactions.forEach((txn) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${txn.type}</td>
+                        <td>₹${txn.amount}</td>
+                        <td>${txn.category}</td>
+        <td>${txn.date ? new Date(txn.date).toLocaleDateString() : "N/A"}</td>
+                    `;
+      tableBody.appendChild(row);
+                });
+            };
+
+  // Filter transactions by selected date range
+  const filterTransactions = () => {
+    const from = fromInput.value;
+    const to = toInput.value;
+
+    if (!from || !to) {
+      alert("Please select both From and To dates.");
+      return;
+    }
+
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    if (fromDate > toDate) {
+      alert("'From' date must be before 'To' date.");
+      return;
+    }
+
+    const filtered = allTransactions.filter(txn => {
+      const txnDate = new Date(txn.date);
+      return txnDate >= fromDate && txnDate <= toDate;
+    });
+
+    renderTransactions(filtered);
+  };
+
+  findBtn.addEventListener("click", filterTransactions);
+  fetchTransactions();
+});
+
+    </script>
+
+
+
+
+
+
+<!-- jsPDF and AutoTable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Button -->
+<button id="download-pdf">Download PDF</button>
+
+<!-- Script -->
+<script>
+  document.getElementById("download-pdf").addEventListener("click", async () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const userName = user?.name || "Vaibhav";
+    const userEmail = user?.email || "vaibhavkatkar@gmail.com";
+
+    // Process table rows
+    const rows = [];
+    document.querySelectorAll("#transactionTableBody tr").forEach(row => {
+      const cells = Array.from(row.children).map((td, i) => {
+        let text = td.innerText.trim();
+        if (i === 1) {
+          // Clean amount field — remove symbols and extra characters
+          const amountOnly = parseFloat(text.replace(/[^\d.-]/g, ""));
+          return amountOnly.toFixed(2); // Keep as string without ₹
+        }
+        return text;
+      });
+      rows.push(cells);
+    });
+
+    // Calculate totals
+    let totalIncome = 0, totalExpense = 0;
+    rows.forEach(([type, amountStr]) => {
+      const amount = parseFloat(amountStr);
+      if (type.toLowerCase() === "income") totalIncome += amount;
+      else if (type.toLowerCase() === "expense") totalExpense += amount;
+    });
+    const balance = totalIncome - totalExpense;
+
+    // Report Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Budget Report", 70, 20);
+
+    // User Info and Summary
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    let y = 30;
+    const gap = 8;
+    doc.text(`User: ${userName}`, 14, y); y += gap;
+    doc.text(`Email: ${userEmail}`, 14, y); y += gap;
+    doc.text(`Total Income: INR ${totalIncome.toFixed(2)}`, 14, y); y += gap;
+    doc.text(`Total Expenses: INR ${totalExpense.toFixed(2)}`, 14, y); y += gap;
+    doc.text(`Remaining Balance: INR ${balance.toFixed(2)}`, 14, y); y += gap + 4;
+
+    // Table
+    doc.autoTable({
+      startY: y,
+      head: [['Type', 'Amount', 'Category', 'Date']],
+      body: rows,
+      theme: 'grid',
+      headStyles: { fillColor: [41, 128, 185] },
+      styles: { fontSize: 11, cellPadding: 3 },
+    });
+
+    // Save file
+    doc.save("budget_report.pdf");
+  });
+</script>
+
+
+
+</script>
+    <script src="/scripts/toggle.js"></script>
+    <script src="/scripts/bot.js"></script>
+    <script src="/scripts/report.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/bot.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <!-- https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie -->
+    <link rel="stylesheet" href="/styles/toggle.css">
+    <link rel="stylesheet" href="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>📊 Budget Planner</h2>
+            <ul>
+                <li><a href="/dashboard">Overview</a></li>
+                <li><a href="/transaction">Transactions</a></li>
+                <li><a href="/budjet">Budgets</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+
+            <!-- Add this button anywhere in your HTML -->
+            <button id="theme-toggle" class="toggle-theme">Toggle Theme</button>
+
+            <button id="logout-btn" class="logout">Logout</button>
+
+        </nav>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <div class="profile-page">
+                <h1>👤 My Profile</h1>
+                <div class="card">
+                  <img class="avatar" id="user-avatar" src="" alt="Avatar">
+                  <h2 id="user-name"></h2>
+                  <p id="user-email"></p>
+                  <p><strong>Total Budget:</strong> ₹<span id="total-budget"></span></p>
+            
+                  <button onclick="openEditModal()">Edit Profile</button>
+                  <button onclick="openPasswordModal()">Change Password</button>
+                  <form id="delete-form" method="POST">
+                    <button class="delete-btn" type="submit" onclick="return confirm('Are you sure?')">Delete Account</button>
+                  </form>
+                </div>
+            
+                <!-- Edit Profile Modal -->
+                <div id="editModal" class="modal">
+                  <form class="modal-content" id="edit-profile-form" enctype="multipart/form-data">
+                    <h3>Edit Profile</h3>
+                    <input type="text" name="name" id="edit-name" required>
+                    <input type="email" name="email" id="edit-email" required>
+                    <input type="file" name="avatar" accept="image/*">
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="closeEditModal()">Cancel</button>
+                  </form>
+                </div>
+            
+                <!-- Change Password Modal -->
+                <div id="passwordModal" class="modal">
+                  <form class="modal-content" id="password-form">
+                    <h3>Change Password</h3>
+                    <input id="oldPass" type="password" name="oldPassword" placeholder="Old Password" required>
+                    <input id="newPass" type="password" name="newPassword" placeholder="New Password" required>
+                    <button id="passBtn" type="submit">Update</button>
+                    <button  type="button" onclick="closePasswordModal()">Cancel</button>
+                  </form>
+                </div>
+            
+                <h3>💰 Budget Summary</h3>
+                <p><strong>Total Budget:</strong> ₹<span id="summary-budget"></span></p>
+                <p><strong>Total Spent:</strong> ₹<span id="summary-spent"></span></p>
+                <hr>
+            
+                <h3>📊 Budget by Category</h3>
+                <ul id="budget-list"></ul>
+            
+                <h3>🧾 Spending by Category</h3>
+                <ul id="spending-list"></ul>
+              </div>
+            
+              <script>
+              
+              </script>          
+
+
+            <div id="floating-bot">
+                <div id="bot-icon">
+                    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+                        type="module"></script>
+
+                    <dotlottie-player src="https://lottie.host/2ff7cd10-1494-4861-840a-89b7b2197564/VPVjGQtPNT.lottie"
+                        background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay>
+
+                    </dotlottie-player>
+                </div>
+
+                <div id="bot-chat" class="hidden">
+                    <div id="bot-header">
+                        <span>AI Bot</span>
+                        <button id="close-bot">&times;</button>
+                    </div>
+                    <div id="bot-messages">
+                        <p class="bot-text">Hello! How can I help you?</p>
+                    </div>
+                    <div id="bot-input">
+                        <input type="text" id="user-message" placeholder="Ask me anything...">
+                        <button id="send-message">➤</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <!-- Load Chart.js and custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/scripts/charts.js"></script>
+    <script src="/scripts/bot.js"></script>
+
+    <script src="/scripts/session.js"></script>
+
+
+
+    <script src="/scripts/profileChange.js"></script>
+    <script src="/scripts/toggle.js"></script>
+
+    <script src="/scripts/profile.js"></script>
+</body>
+
+</html>

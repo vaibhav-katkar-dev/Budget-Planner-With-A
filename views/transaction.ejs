@@ -20,10 +20,10 @@
             <h2>📊 Budget Planner</h2>
             <ul>
                 <li><a href="/dashboard">Overview</a></li>
-                <li><a href="transaction">Transactions</a></li>
-                <li><a href="budjet">Budgets</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="/transaction">Transactions</a></li>
+                <li><a href="/budjet">Budgets</a></li>
+                <li><a href="/reports">Reports</a></li> 
+                <li><a href="/profile">Profile</a></li>
             </ul>
         
 <!-- Add this button anywhere in your HTML -->
@@ -42,14 +42,8 @@
                 <div class="transaction-form">
                     <!-- <h2>Add Transaction</h2> -->
                     <form id="transactionForm">
-                        <select id="type" name="type" class="input-field">
-                            <option value="income">Income</option>
-                            <option value="expense">Expense</option>
-                        </select>
-
-                        <input type="number" id="amount" placeholder="Amount" name="amount" class="input-field" required>
-
-                        <select id="category" name="category" class="input-field" required>
+                        
+                        <!-- <select id="category" name="category" class="input-field" required>
                             <optgroup label="Expenses">
                                 <option value="food">Food & Dining</option>
                                 <option value="transport">Transportation</option>
@@ -66,9 +60,21 @@
                                 <option value="savings">Savings & Investments</option>
                                 <option value="other_expense">Other</option>
                             </optgroup>
+                        </select> -->
+                        <input type="text" id="category" placeholder="Catagory" name="category" class="input-field" required>
+
+                        <select id="type" name="type" class="input-field">
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
                         </select>
 
+                        <input type="number" id="amount" placeholder="Amount" name="amount" class="input-field" required>
+
+
                         <input type="date" id="date" name="date" class="input-field" required>
+                        <input type="hidden" name="<%=user%>" value="hi">
+                       
+                        <!-- <input type="email" value="qewruioa" name="user"> -->
 
                         <button type="submit" class="btn">Add Transaction</button>
                     </form>
@@ -117,9 +123,13 @@
         </div>
     </div>
 
-    <script src="/scripts/bot.js"></script>
+
+    <script>
+        const user = <%- JSON.stringify(user) %>;
+        console.log(user.id,user.email); // Now accessible in JS
 
 
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const transactionForm = document.getElementById("transactionForm");
@@ -183,13 +193,14 @@
                     alert("Please enter a valid amount.");
                     return;
                 }
+                // console.log(req.session.user);
 
                 // Send data to backend
                 try {
                     const response = await fetch("/api/add-transaction", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ type, amount, category, date })//userId
+                        body: JSON.stringify({ type, amount, category, date ,user})//userId
                     });
 
                     const result = await response.json();
@@ -202,6 +213,7 @@
                         alert("Error: " + result.message);
                     }
                 } catch (error) {
+                    window.location.href="/transaction"
                     console.error("Error sending data:", error);
                 }
             });
@@ -210,7 +222,9 @@
         });
     </script>
 
-    <script src="/scripts/script.js"></script>
+
     <script src="/scripts/toggle.js"></script>
+    <script src="/scripts/bot.js"></script>
+
 </body>
 </html>
