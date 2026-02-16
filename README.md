@@ -28,7 +28,6 @@ A comprehensive budget management application with AI-powered assistance to help
 - Natural language transaction entry
 - Smart budget recommendations
 - Financial insights and advice
-- Chat history for reference
 
 ### 📈 Reports & Analytics
 - Monthly expense charts
@@ -48,7 +47,6 @@ A comprehensive budget management application with AI-powered assistance to help
 - **Templating**: EJS (Embedded JavaScript)
 - **Authentication**: Express-session, bcryptjs
 - **AI Integration**: Google Gemini API
-- **File Upload**: Multer
 - **Frontend**: HTML, CSS, JavaScript, Chart.js
 
 ## 📁 Project Structure
@@ -189,13 +187,10 @@ The AI assistant understands natural language commands:
 2. Create a new API key
 3. Add it to your `.env` file
 
-## 📝 License
-
-This project is licensed under the ISC License.
 
 ## 👨‍💻 Author
 
-Created with ❤️ by [Vaibhav]()
+Created with ❤️ by [Vaibhav Katkar]()
 
 ## 🙏 Acknowledgments
 
